@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Mssqlhelper by play175</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Mssqlhelper</h1>
+        <h2>nodejs Microsoft SQL Server Helper nodejs的一个用于连接mssql数据库的工具类</h2>
+        <a href="https://github.com/play175/mssqlhelper" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>nodejs Microsoft SQL Server Helper</h1>
+
+<h1>nodejs的一个用于连接mssql数据库的工具类</h1>
+
+<h2>Features 介绍</h2>
+
+<ul>
+<li>采用微软tds协议，不需要任何C/C++扩展，跨平台使用</li>
+<li>执行sql语句，获得结果行</li>
+<li>执行存储过程，获得输出参数以及结果行</li>
+</ul><h2>TODO 待实现内容</h2>
+
+<ul>
+<li>将支持获得多个结果集（Table）</li>
+<li>将支持连接池</li>
+<li>更多性能加强</li>
+</ul><h2>Use 使用</h2>
+
+<pre><code>npm install mssqlhelper
+</code></pre>
+
+<h2>Test 测试代码</h2>
+
+<div class="highlight">
+<pre><span class="kd">var</span> <span class="nx">db</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'./index'</span><span class="p">);</span>
+
+<span class="nx">db</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span>
+    <span class="nx">host</span><span class="o">:</span> <span class="s1">'192.168.1.100'</span>
+    <span class="p">,</span><span class="nx">port</span><span class="o">:</span> <span class="mi">1433</span>
+    <span class="p">,</span><span class="nx">userName</span><span class="o">:</span> <span class="s1">'sa'</span>
+    <span class="p">,</span><span class="nx">password</span><span class="o">:</span> <span class="s1">'123'</span>
+    <span class="p">,</span><span class="nx">database</span><span class="o">:</span><span class="s1">'testdb'</span>
+<span class="p">});</span>
+
+<span class="c1">//test query sql 执行sql</span>
+
+<span class="nx">db</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span>
+    <span class="s1">'select @Param1 Param1,@Param2 Param2'</span>
+    <span class="p">,{</span>
+         <span class="nx">Param1</span><span class="o">:</span> <span class="p">{</span> <span class="nx">type</span> <span class="o">:</span> <span class="s1">'NVarChar'</span><span class="p">,</span> <span class="nx">size</span><span class="o">:</span> <span class="mi">7</span><span class="p">,</span><span class="nx">value</span> <span class="o">:</span> <span class="s1">'myvalue'</span> <span class="p">}</span>
+         <span class="p">,</span><span class="nx">Param2</span><span class="o">:</span> <span class="p">{</span> <span class="nx">type</span> <span class="o">:</span> <span class="s1">'Int'</span><span class="p">,</span><span class="nx">value</span> <span class="o">:</span> <span class="mi">321</span> <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">err</span><span class="p">)</span><span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'database error:'</span><span class="o">+</span><span class="nx">res</span><span class="p">.</span><span class="nx">err</span><span class="p">.</span><span class="nx">msg</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">rows</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">rows</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">rows</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">rows</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">getValue</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="nx">rows</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">getValue</span><span class="p">(</span><span class="s1">'Param2'</span><span class="p">));</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+
+<span class="c1">//test excute sp 执行存储过程</span>
+
+<span class="nx">db</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span>
+    <span class="s1">'test_sp'</span>
+    <span class="p">,{</span>
+         <span class="nx">Param1</span><span class="o">:</span> <span class="p">{</span><span class="nx">direction</span><span class="o">:</span><span class="s1">'out'</span><span class="p">,</span> <span class="nx">type</span> <span class="o">:</span> <span class="s1">'NVarChar'</span><span class="p">,</span> <span class="nx">size</span><span class="o">:</span> <span class="mi">50</span><span class="p">,</span><span class="nx">value</span> <span class="o">:</span> <span class="s1">'my Param1 value'</span> <span class="p">}</span>
+         <span class="p">,</span><span class="nx">Param2</span><span class="o">:</span> <span class="p">{</span> <span class="nx">type</span> <span class="o">:</span> <span class="s1">'Int'</span><span class="p">,</span><span class="nx">value</span> <span class="o">:</span> <span class="mi">123</span> <span class="p">}</span>
+         <span class="p">,</span><span class="nx">Param3</span><span class="o">:</span> <span class="p">{</span><span class="nx">direction</span><span class="o">:</span><span class="s1">'out'</span><span class="p">,</span> <span class="nx">type</span> <span class="o">:</span> <span class="s1">'VarChar'</span><span class="p">,</span> <span class="nx">size</span><span class="o">:</span> <span class="mi">50</span><span class="p">,</span><span class="nx">value</span> <span class="o">:</span> <span class="s1">'789'</span> <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">res</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">err</span><span class="p">)</span><span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">'database error:'</span><span class="o">+</span><span class="nx">res</span><span class="p">.</span><span class="nx">err</span><span class="p">.</span><span class="nx">msg</span><span class="p">);</span>
+
+        <span class="c1">//get output paramater value</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'output @Param1='</span><span class="o">+</span><span class="nx">res</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">Param1</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
+
+        <span class="c1">//get rows</span>
+        <span class="kd">var</span> <span class="nx">rows</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">rows</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">rows</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">rp</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
+            <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">j</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="nx">len</span> <span class="o">=</span> <span class="nx">rows</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">metadata</span><span class="p">.</span><span class="nx">columns</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span><span class="nx">j</span><span class="o">&lt;</span><span class="nx">len</span><span class="p">;</span><span class="nx">j</span><span class="o">++</span><span class="p">){</span>
+                <span class="kd">var</span> <span class="nx">col</span> <span class="o">=</span> <span class="nx">rows</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">metadata</span><span class="p">.</span><span class="nx">columns</span><span class="p">[</span><span class="nx">j</span><span class="p">];</span>
+                <span class="nx">rp</span> <span class="o">+=</span> <span class="s1">' '</span> <span class="o">+</span><span class="p">(</span><span class="nx">rows</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">getValue</span><span class="p">(</span><span class="nx">j</span><span class="p">));</span>
+            <span class="p">}</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">rp</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+
+</pre>
+</div>
+
+
+<p>///////////////////////////////问题和解决方案//////////////////////////////////////</p>
+
+<p>问题/Issues：</p>
+
+<p>1：不能输出匿名列，比如select *</p>
+
+<p>2：如果不能排序，比如 select a from table oerder by b desc，目前的解决方法：
+    ;with result as(
+        SELECT Actor,ActorName FROM [GameActor] order by time desc
+    )
+    select * from result</p>
+
+<p>3：输出中文乱码，引发这个问题有几个方面，解决方法：</p>
+
+<pre><code>（1）把所有js文件用utf-8编码保存
+（2）数据库中含有中文的字段，必须是unicode类型，比如varchar应该改为nvarchar:cast(column1 as nvarchar(50))
+</code></pre>
+
+<p>4:在多进程cluster的的使用：</p>
+
+<div class="highlight">
+<pre>    <span class="kd">var</span> <span class="nx">db</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'./index'</span><span class="p">);</span>    
+    <span class="kd">var</span> <span class="nx">cluster</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'cluster'</span><span class="p">);</span>   
+    <span class="k">if</span> <span class="p">(</span><span class="nx">cluster</span><span class="p">.</span><span class="nx">isMaster</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">numCPUs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'os'</span><span class="p">).</span><span class="nx">cpus</span><span class="p">().</span><span class="nx">length</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">numCPUs</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">worker</span> <span class="o">=</span> <span class="nx">cluster</span><span class="p">.</span><span class="nx">fork</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">db</span><span class="p">.</span><span class="nx">config</span><span class="p">(..);</span>
+        <span class="nx">db</span><span class="p">.</span><span class="nx">query</span><span class="p">(..);</span>
+    <span class="p">}</span>
+
+</pre>
+</div>
+
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/play175/mssqlhelper/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/play175/mssqlhelper/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/play175/mssqlhelper"></a> is maintained by <a href="https://github.com/play175">play175</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
