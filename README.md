@@ -1,26 +1,26 @@
 # nodejs Microsoft SQL Server Helper 
-# nodejs的一个用于连接mssql数据库的工具类
+ nodejs的一个用于连接mssql数据库的工具类
 
-## Features 介绍
+# Features 介绍
 
  * 采用微软tds协议，不需要任何C/C++扩展，跨平台使用
  * 执行sql语句，获得结果行
  * 执行存储过程，获得输出参数以及结果行
 
-## TODO 待实现内容
+# TODO 待实现内容
 
  * 将支持获得多个结果集（Table）
  * 将支持连接池
  * 更多性能加强
 
 
-## Use 使用
+# Use 使用
 ```
     $ git clone git@github.com:play175/mssqlhelper.git
     $ cd mssqlhelper
     $ node test.js
 ```
-## Test 测试代码
+# Test 测试代码
 ```javascript
 var db = require('./index');
 
