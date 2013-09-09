@@ -20,7 +20,7 @@
     $ cd mssqlhelper
     $ node test.js
 ```
-# Test 测试代码
+# Example 测试代码
 ```javascript
 var db = require('./index');
 
