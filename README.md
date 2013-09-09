@@ -81,17 +81,24 @@ db.exec(
 
 ///////////////////////////////问题和解决方案//////////////////////////////////////
 问题/Issues：
+
 1：不能输出匿名列，比如select *
+
 2：如果不能排序，比如 select a from table oerder by b desc，目前的解决方法：
+```sql
 	;with result as(
 		SELECT Actor,ActorName FROM [GameActor] order by time desc
 	)
 	select * from result
+```	
 3：输出中文乱码，引发这个问题有几个方面，解决方法：
+
 	（1）把所有js文件用utf-8编码保存
+	
 	（2）数据库中含有中文的字段，必须是unicode类型，比如varchar应该改为nvarchar
 
 4:在多进程cluster的的使用：
+```javascript
 	var db = require('./index');	
 	var cluster = require('cluster');	
 	if (cluster.isMaster) {
@@ -103,4 +110,5 @@ db.exec(
 	    db.config(..);
 	    db.query(..);
 	}
+```
 
