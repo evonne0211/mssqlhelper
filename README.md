@@ -1,5 +1,9 @@
 # nodejs Microsoft SQL Server Helper 
  nodejs的一个用于连接mssql数据库的工具类
+ 
+ 说明一下，lib目录的tds是第三库，原作者已经不更新了，年代久远，地址也无从知晓。
+ 请慎重使用！
+ 
 
 # Features 介绍
 
