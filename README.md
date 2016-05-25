@@ -1,3 +1,6 @@
+这里不再更新了，试试微软官方出的 msnodesql 吧：https://www.npmjs.com/package/msnodesql
+
+
 # nodejs Microsoft SQL Server Helper 
  nodejs的一个用于连接mssql数据库的工具类
  
